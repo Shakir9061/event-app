@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/login.dart';
-import 'package:flutter_application_1/splash.dart';
+import 'package:flutter_application_1/admin/login.dart';
+import 'package:flutter_application_1/admin/splash.dart';
+import 'package:flutter_application_1/student/signin1.dart';
+import 'package:flutter_application_1/teacher/signin.dart';
 
 void main() {
   runApp(const MyApp());
@@ -34,7 +36,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const Login()
+      home: const Splash()
     );
   }
 }
