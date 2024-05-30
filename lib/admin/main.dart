@@ -1,10 +1,14 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/admin/login.dart';
 import 'package:flutter_application_1/admin/splash.dart';
+import 'package:flutter_application_1/firebase_options.dart';
 import 'package:flutter_application_1/student/signin1.dart';
 import 'package:flutter_application_1/teacher/signin.dart';
 
-void main() {
+void main()async {
+  WidgetsFlutterBinding.ensureInitialized();
+await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(const MyApp());
 }
 

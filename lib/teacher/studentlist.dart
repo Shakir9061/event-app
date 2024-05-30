@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -8,13 +10,16 @@ import 'package:flutter_application_1/teacher/profile.dart';
 import 'package:flutter_application_1/teacher/request.dart';
 
 class Student_List extends StatefulWidget {
-  const Student_List({super.key});
+ 
+   const Student_List({super.key, });
 
   @override
   State<Student_List> createState() => _Student_ListState();
 }
 
 class _Student_ListState extends State<Student_List> {
+ 
+
   @override
   Widget build(BuildContext context) {
     return  DefaultTabController(
@@ -62,6 +67,7 @@ class _Student_ListState extends State<Student_List> {
                           Eventtabbar()
                         ]),
                       ),
+                     
           
              Align(
                         alignment: Alignment.bottomCenter,
