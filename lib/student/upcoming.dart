@@ -17,20 +17,14 @@ class _UpcomingStdState extends State<UpcomingStd> {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
-        body: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(top: 50),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Text(
-                    'Event',
-                    style: TextStyle(fontSize: 18),
+        appBar: AppBar(
+          title:  Text(
+                    'Event',style: TextStyle(fontWeight: FontWeight.w500),
+                    
                   ),
-                  Padding(
-                      padding: const EdgeInsets.only(left: 90),
-                      child: InkWell(
+                  centerTitle: true,
+                  actions: [
+                    InkWell(
                         onTap: () {
                           Navigator.push(
                               context,
@@ -42,10 +36,8 @@ class _UpcomingStdState extends State<UpcomingStd> {
                             height: 26,
                             width: 26,
                             image: AssetImage('images/profile.png')),
-                      )),
-                  Padding(
-                      padding: const EdgeInsets.only(left: 20, right: 20),
-                      child: InkWell(
+                      ),
+                      InkWell(
                         onTap: () {
                           Navigator.push(
                               context,
@@ -53,16 +45,30 @@ class _UpcomingStdState extends State<UpcomingStd> {
                                 builder: (context) => Notificationstd(),
                               ));
                         },
-                        child: Image(
-                            height: 26,
-                            width: 26,
-                            image: AssetImage('images/Notification.png')),
-                      )),
-                ],
-              ),
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 15.0,right: 15),
+                          child: Image(
+                              height: 26,
+                              width: 26,
+                              image: AssetImage('images/Notification.png')),
+                        ),
+                      )
+                  ],
+                  bottom: PreferredSize(preferredSize: Size.fromHeight(2), child: Container(color:Colors.black12 ,height: 2,)),
+                  toolbarHeight: 60,
+        ),
+        body: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+               
+                
+                
+              ],
             ),
             Padding(
-              padding: const EdgeInsets.only(top: 20, left: 5),
+              padding: const EdgeInsets.only(top: 20, left: 10),
               child: Row(
                 children: [
                   TabBar(

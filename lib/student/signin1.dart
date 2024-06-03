@@ -17,18 +17,77 @@ class _SigninstudentState extends State<Signinstudent> {
   final formkey = GlobalKey<FormState>();
   var emailcontroller = TextEditingController();
   var passwordcontroller = TextEditingController();
+  Future<void> studentsignin() async {
+    if (formkey.currentState!.validate()) {
+      String email = emailcontroller.text.trim();
+      String password = passwordcontroller.text.trim();
+      var querySnapshot = await FirebaseFirestore.instance
+          .collection('student data')
+          .where('email', isEqualTo: email)
+          .limit(1)
+          .get();
+      if (querySnapshot.docs.isNotEmpty) {
+        var userData = querySnapshot.docs.first.data();
+        if (userData['password'] == password) {
+          var storeId = userData['stdid'];
+          if (storeId != null) {
+            SharedPreferences pref = await SharedPreferences.getInstance();
+            await pref.setString('stdid', storeId);
+          }
+          SharedPreferences pref = await SharedPreferences.getInstance();
+          String? stdid = pref.getString('stdid');
+          print('student id:$stdid');
+
+          emailcontroller.clear();
+          passwordcontroller.clear();
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => Event1(),
+              ));
+          Fluttertoast.showToast(
+            msg: 'Succesfully loggined',
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.black,
+            textColor: Colors.white,
+            fontSize: 16.0,
+          );
+        } else {
+          print('incorrect password');
+          Fluttertoast.showToast(
+            msg: 'Incorrect Password',
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+            fontSize: 16.0,
+          );
+        }
+      } else {
+        print('User not Fount');
+        Fluttertoast.showToast(
+          msg: 'User Not Found',
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0,
+        );
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-      Future<void> _savedata(String storeId) async {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      await prefs.setString('data', storeId);
-    }
     return Scaffold(
       body: SafeArea(
           child: Form(
-                  key: formkey,
-                  child: Column(
+        key: formkey,
+        child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -86,49 +145,9 @@ class _SigninstudentState extends State<Signinstudent> {
               padding: const EdgeInsets.only(top: 30),
               child: Center(
                 child: InkWell(
-                 
-                   onTap: () async {
-                    if (formkey.currentState?.validate() ?? false) {
-                      String email = emailcontroller.text.trim();
-                      String password = passwordcontroller.text.trim();
-                      var querySnapshot = await FirebaseFirestore.instance
-                          .collection('student data')
-                          .where('email', isEqualTo: email)
-                          .limit(1)
-                          .get();
-                      if (querySnapshot.docs.isNotEmpty) {
-                        var userData = querySnapshot.docs.first.data();
-                        if (userData['password'] == password) {
-                          var storeId = userData['data'] as String?;
-                          if (storeId != null) {
-                            await _savedata(storeId);
-                           
-                          }
-                        
-                           Fluttertoast.showToast(
-                                msg: 'Succesfully loggined',
-                                toastLength: Toast.LENGTH_LONG,
-                                gravity: ToastGravity.BOTTOM,
-                                timeInSecForIosWeb: 1,
-                                backgroundColor: Colors.black,
-                                textColor: Colors.white,
-                                fontSize: 16.0,
-                              );
-                          emailcontroller.clear();
-                          passwordcontroller.clear();
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => Event1(),
-                              ));
-                              
-                              
-                        }
-                      }
-                    }
+                  onTap: ()  {
+                    studentsignin();
                   },
-                   
-                  
                   child: Container(
                     height: 50,
                     width: 350,
@@ -166,8 +185,8 @@ class _SigninstudentState extends State<Signinstudent> {
               ),
             ),
           ],
-                  ),
-                )),
+        ),
+      )),
     );
   }
 }

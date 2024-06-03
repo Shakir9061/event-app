@@ -11,32 +11,22 @@ class _StdDetailsState extends State<StdDetails> {
   @override
   Widget build(BuildContext context) {
     return  Scaffold(
+        appBar: AppBar(
+          title:  Text(
+                    'Student details',style: TextStyle(fontWeight: FontWeight.w500),
+                    
+                  ),
+                  centerTitle: true,
+                 
+                  bottom: PreferredSize(preferredSize: Size.fromHeight(2), child: Container(color:Colors.black12 ,height: 2,)),
+                  toolbarHeight: 60,
+        ),
      body: SafeArea(
         child: Column(
           children: [
-             Center(
-                  child: Padding(
-                padding: const EdgeInsets.only(top: 50),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(right: 90, left: 20),
-                      child: IconButton(
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                          icon: Icon(Icons.arrow_back_ios)),
-                    ),
-                    Text(
-                      'Student Detail',
-                      style: TextStyle(fontSize: 18,fontWeight: FontWeight.w500 ),
-                    ),
-                  ],
-                ),
-              )),
+            
               Padding(
-                padding: const EdgeInsets.only(top: 10,bottom: 5),
+                padding: const EdgeInsets.only(top: 20,bottom: 5),
                 child: Image(
                   height: 100,
                   width: 100,

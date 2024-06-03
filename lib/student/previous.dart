@@ -12,15 +12,28 @@ class _PreviousStdState extends State<PreviousStd> {
   @override
   Widget build(BuildContext context) {
     return  Scaffold(
+       appBar: AppBar(
+        automaticallyImplyLeading: false,
+        leading: GestureDetector(
+          onTap: () {
+            Navigator.pop(context);
+          },
+          child: Icon(Icons.arrow_back_ios)),
+          title:  Text(
+                    'Event',style: TextStyle(fontWeight: FontWeight.w500),
+                    
+                  ),
+                  centerTitle: true,
+                 
+                  bottom: PreferredSize(preferredSize: Size.fromHeight(2), child: Container(color:Colors.black12 ,height: 2,)),
+                  toolbarHeight: 60,
+        ),
        body: SafeArea(
         child: Column(
           children: [
-          Center(child: Padding(
-            padding: const EdgeInsets.only(top: 50),
-            child: Text('Event',style: TextStyle(fontSize: 18,fontWeight: FontWeight.w500),),
-          )),
+         
             Padding(
-                    padding: const EdgeInsets.only(top: 40,left: 10,right: 10),
+                    padding: const EdgeInsets.only(top: 30,left: 10,right: 10),
                     child: ListTile(
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(7)),
                       onTap: () {

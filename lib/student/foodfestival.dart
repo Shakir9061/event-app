@@ -13,30 +13,20 @@ class _FoodFestivalstdState extends State<FoodFestivalstd> {
   @override
   Widget build(BuildContext context) {
     return  Scaffold(
+        appBar: AppBar(
+          title:  Text(
+                    'Details',style: TextStyle(fontWeight: FontWeight.w500),
+                    
+                  ),
+                  centerTitle: true,
+                 
+                  bottom: PreferredSize(preferredSize: Size.fromHeight(2), child: Container(color:Colors.black12 ,height: 2,)),
+                  toolbarHeight: 60,
+        ),
       body:SafeArea(
         child: Column(
           children: [
-             Center(
-                    child: Padding(
-                  padding: const EdgeInsets.only(top: 50),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(right: 120, left: 5),
-                        child: IconButton(
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                            icon: Icon(Icons.arrow_back_ios)),
-                      ),
-                      Text(
-                        'Details',
-                        style: TextStyle(fontSize: 18,fontWeight: FontWeight.w500),
-                      ),
-                    ],
-                  ),
-                )),
+           
                  Padding(
               padding: const EdgeInsets.only(top: 20),
               child: Center(
