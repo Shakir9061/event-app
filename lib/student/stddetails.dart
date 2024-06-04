@@ -1,7 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class StdDetails extends StatefulWidget {
-  const StdDetails({super.key});
+  var event;
+   StdDetails({super.key, required this. event});
 
   @override
   State<StdDetails> createState() => _StdDetailsState();
@@ -32,7 +34,7 @@ class _StdDetailsState extends State<StdDetails> {
                   width: 100,
                   image: AssetImage('images/person1.png')),
               ),
-              Text('Anandhu',style: TextStyle(fontSize: 16),),
+              Text(widget.event['name'],style: TextStyle(fontSize: 16),),
              Padding(
                padding: const EdgeInsets.only(top: 20),
                child: Row(
@@ -86,10 +88,10 @@ class _StdDetailsState extends State<StdDetails> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
-                      Text('Bcom'),
+                      Text(widget.event['department']),
                       Padding(
                         padding: const EdgeInsets.only(top: 10),
-                        child: Text('Holi Festival'),
+                        child: Text(widget.event['event']),
                       ),
                       Padding(
                         padding: const EdgeInsets.only(top: 10),
@@ -144,9 +146,13 @@ class _StdDetailsState extends State<StdDetails> {
            ),
          ],
        ),
-       Padding(
-         padding: const EdgeInsets.only(top: 10,left: 20,right: 20),
-         child: Text('Corem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio mattis. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Curabitur tempus urna at turpis condimentum lobortis.'),
+       Row(
+         children: [
+           Padding(
+             padding: const EdgeInsets.only(left: 20,top: 10),
+             child: Text(widget.event['description']),
+           ),
+         ],
        ),    
               
           ],
