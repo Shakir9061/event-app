@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter_application_1/student/Event.dart';
+import 'package:flutter_application_1/student/signin1.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class Regstudent extends StatefulWidget {
   const Regstudent({super.key});
@@ -20,6 +19,7 @@ class _RegstudentState extends State<Regstudent> {
   final TextEditingController regpassword = TextEditingController();
   final formkey = GlobalKey<FormState>();
   Future<void> registrationdetails() async {
+   
     if (formkey.currentState?.validate() ?? false) {
       try {
         UserCredential userCredential = await FirebaseAuth.instance
@@ -37,14 +37,21 @@ class _RegstudentState extends State<Regstudent> {
             'email': regemail.text,
             'password': regpassword.text,
             'stdid': studentuid,
+           
           });
+          regname.clear();
+          regdepartment.clear();
+          regphonenumber.clear();
+          regemail.clear();
+          regpassword.clear();
+
                   Fluttertoast.showToast(msg: "regisration succussfully");
 
 
         Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => Event1(),
+              builder: (context) => Signinstudent(),
             ));
       }on FirebaseAuthException catch (e) {
         print('Failed to register user: $e');

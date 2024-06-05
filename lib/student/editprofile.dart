@@ -1,14 +1,14 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/student/Event.dart';
 import 'package:flutter_application_1/student/profilestd.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class EditProfile extends StatefulWidget {
-  File? image;
-  EditProfile({super.key, this.image});
+  EditProfile({super.key});
 
   @override
   State<EditProfile> createState() => _EditProfileState();
@@ -19,6 +19,9 @@ class _EditProfileState extends State<EditProfile> {
   var department = TextEditingController();
   var phonenumber = TextEditingController();
   var email = TextEditingController();
+  File? image;
+  String? imageurl;
+
   Future<void> setuserdetails() async {
     try {
       SharedPreferences pref = await SharedPreferences.getInstance();
@@ -36,6 +39,7 @@ class _EditProfileState extends State<EditProfile> {
               department.text = studentsnapshot['department'] ?? '';
               phonenumber.text = studentsnapshot['phone no'] ?? '';
               email.text = studentsnapshot['email'] ?? '';
+              imageurl = studentsnapshot['imageurl'] ?? '';
             });
           }
         });
@@ -45,6 +49,7 @@ class _EditProfileState extends State<EditProfile> {
     }
   }
 
+  @override
   void initState() {
     super.initState();
     setuserdetails();
@@ -61,19 +66,37 @@ class _EditProfileState extends State<EditProfile> {
         'name': name.text,
         'department': department.text,
         'phone no': phonenumber.text,
-        'email': email.text
+        'email': email.text,
+        'imageurl': imageurl ?? '',
       });
       await pref.setString('name', name.text);
       await pref.setString('department', department.text);
       await pref.setString('phone no', phonenumber.text);
       await pref.setString('email', email.text);
+      if (imageurl != null) {
+        await pref.setString('imageurl', imageurl!);
+      }
       ScaffoldMessenger.of(context)
           .showSnackBar(SnackBar(content: Text('Profile updated')));
       Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => Event1(),
+            builder: (context) => Profilestd(),
           ));
+    }
+  }
+
+  Future<void> profileimg() async {
+    if (image != null) {
+      var ref = FirebaseStorage.instance
+          .ref()
+          .child('profile image')
+          .child(DateTime.now().millisecondsSinceEpoch.toString());
+      await ref.putFile(image!);
+      var imgurl = await ref.getDownloadURL();
+      setState(() {
+        imageurl = imgurl;
+      });
     }
   }
 
@@ -107,11 +130,27 @@ class _EditProfileState extends State<EditProfile> {
               )),
               Padding(
                 padding: const EdgeInsets.only(top: 10),
-                child: CircleAvatar(
-                  radius: 50,
-                  backgroundImage:
-                      widget.image != null ? FileImage(widget.image!) : null,
-                  child: widget.image == null ? Icon(Icons.person) : null,
+                child: InkWell(
+                  onTap: () async {
+                    var picked = await ImagePicker()
+                        .pickImage(source: ImageSource.gallery);
+                    if (picked != null) {
+                      setState(() {
+                        image = File(picked.path);
+                      });
+                    }
+                  },
+                  child: CircleAvatar(
+                    radius: 50,
+                    backgroundImage: image != null
+                        ? FileImage(image!) as ImageProvider<Object>
+                        : (imageurl != null && imageurl!.isNotEmpty)
+                            ? NetworkImage(imageurl!)
+                            : null,
+                    child: image == null && (imageurl == null || imageurl!.isEmpty)
+                        ? Icon(Icons.person, size: 50)
+                        : null,
+                  ),
                 ),
               ),
               Row(
@@ -202,7 +241,8 @@ class _EditProfileState extends State<EditProfile> {
                 padding: const EdgeInsets.only(top: 140),
                 child: InkWell(
                   onTap: () async {
-                    updateuserdetails();
+                    await profileimg();
+                    await updateuserdetails();
                   },
                   child: Container(
                     height: 50,
