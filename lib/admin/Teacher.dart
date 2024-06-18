@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class Teacher extends StatefulWidget {
@@ -13,38 +14,25 @@ class _TeacherState extends State<Teacher> {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
-        body: Column(
-          children: [
-             
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.only(top: 10, left: 10, right: 10),
-                child: ListView.builder(
-                  itemCount: 6,
-                  itemBuilder: (context, index) {
-                    return Padding(
-                      padding: const EdgeInsets.only(top: 10),
-                      child: ListTile(
-                        textColor: Colors.black,
-                        tileColor: Colors.blue[50],
-                        leading: Image(
-                          height: 40,
-                          width: 40,
-                          image: AssetImage('images/person.png')),
-                        title: Text('Teacher'),
-                        subtitle: Text('Department'),
-                        trailing: Wrap(spacing: 12, children: [
-                          Icon(Icons.cancel_outlined,color: Colors.red,),
-                          Icon(Icons.check_circle_outline_rounded,color: Colors.green,),
-                        ]),
-                      ),
-                    );
-                  },
-                ),
-              ),
-            ),
-          ],
-        ),
+        body: StreamBuilder(stream: FirebaseFirestore.instance.collection('Teacher data').snapshots(), builder: (context,AsyncSnapshot<QuerySnapshot> snapshot) {
+          if(!snapshot.hasData){
+            return Center(child: CircularProgressIndicator(),);
+          }
+          return ListView.builder(
+            itemCount: snapshot.data!.docs.length,
+            itemBuilder: (context, index) {
+            var teacher=snapshot.data!.docs[index];
+  return Padding(
+    padding: const EdgeInsets.only(top: 10,left: 15,right: 15),
+    child: ListTile(
+      tileColor: Colors.blue[50],
+      leading: CircleAvatar(child: Icon(Icons.person),),
+      title: Text(teacher['name']),
+      subtitle: Text(teacher['department']),
+    ),
+  );
+          },);
+        },),
       ),
     );
   }

@@ -16,30 +16,17 @@ class _OnamFestivalstdState extends State<OnamFestivalstd> {
     return  DefaultTabController(
       length: 2,
       child: Scaffold(
-        body: SafeArea(
-            child: Column(
-              children: [
-                Center(
-                    child: Padding(
-                  padding: const EdgeInsets.only(top: 50),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(right: 120, left: 5),
-                        child: IconButton(
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                            icon: Icon(Icons.arrow_back_ios)),
-                      ),
-                      Text(
+        appBar: AppBar(
+          title:Text(
                         'Details',
                         style: TextStyle(fontSize: 18,fontWeight: FontWeight.w500),
                       ),
-                    ],
-                  ),
-                )),
+                      centerTitle: true,
+        ),
+        body: SafeArea(
+            child: Column(
+              children: [
+              
                  Padding(
                         padding: const EdgeInsets.only(top: 20,left: 10),
                         child: Row(

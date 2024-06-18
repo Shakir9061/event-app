@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class StdDetails extends StatefulWidget {
   var event;
@@ -10,6 +11,19 @@ class StdDetails extends StatefulWidget {
 }
 
 class _StdDetailsState extends State<StdDetails> {
+  String? imageurl;
+   void initState() {
+    super.initState();
+    Profileimage();
+  }
+  Future<void>Profileimage()async{
+    SharedPreferences pref= await SharedPreferences.getInstance();
+  
+    setState(() {
+       imageurl = pref.getString('imageurl');
+      print('image url :$imageurl');
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return  Scaffold(
@@ -29,11 +43,20 @@ class _StdDetailsState extends State<StdDetails> {
             
               Padding(
                 padding: const EdgeInsets.only(top: 20,bottom: 5),
-                child: Image(
-                  height: 100,
-                  width: 100,
-                  image: AssetImage('images/person1.png')),
+                child: CircleAvatar(
+                        radius: 50,
+                       backgroundImage: imageurl != null && imageurl!.isNotEmpty
+                        ? NetworkImage(imageurl!)
+                        : null,
+                            
+                        child: imageurl == null || imageurl!.isEmpty
+                            ? Icon(Icons.person, size: 50)
+                            : null,
+                            
+                      ),
+                      
               ),
+              
               Text(widget.event['name'],style: TextStyle(fontSize: 16),),
              Padding(
                padding: const EdgeInsets.only(top: 20),

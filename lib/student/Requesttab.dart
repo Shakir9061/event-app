@@ -11,7 +11,7 @@ class Requesttabstd extends StatefulWidget {
 }
 
 class _RequesttabstdState extends State<Requesttabstd> {
-  List previous = ['Holi Festival', 'Halloween'];
+ 
 
   @override
   Widget build(BuildContext context) {
@@ -35,6 +35,9 @@ class _RequesttabstdState extends State<Requesttabstd> {
                 onTap: () {
                  Navigator.push(context, MaterialPageRoute(builder: (context) => StdDetails(event:event),)) ;
                 },
+                trailing: IconButton(onPressed: () {
+                  FirebaseFirestore.instance.collection('Request event').doc(event.id).delete();
+                }, icon: Icon(Icons.delete,color: Colors.white,)),
               ),
            );
             

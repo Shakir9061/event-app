@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/student/editprofile.dart';
+import 'package:flutter_application_1/student/upcoming.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -45,16 +46,14 @@ class _ProfilestdState extends State<Profilestd> {
               phonenumber.text = studentsnapshot['phone no'] ?? '';
               email.text = studentsnapshot['email'] ?? '';
               imageurl = studentsnapshot['imageurl'] ?? '';
-              isLoading = false; // Set loading to false when data is fetched
+             
             });
           }
         });
       }
     } catch (e) {
       print('error fetching student details:$e');
-      setState(() {
-        isLoading = false; // Ensure loading is set to false in case of error
-      });
+     
     }
   }
 
@@ -73,11 +72,16 @@ class _ProfilestdState extends State<Profilestd> {
           style: TextStyle(fontWeight: FontWeight.w500),
         ),
         centerTitle: true,
+        // automaticallyImplyLeading: false,
+        // leading: IconButton(
+        //   onPressed: () {
+        //     Navigator.push(context, MaterialPageRoute(builder: (context) => UpcomingStd(),));
+        //   },
+        //   icon: Icon(Icons.arrow_back)),
       ),
       body: SafeArea(
-        child: isLoading // Show loading indicator if loading
-            ? Center(child: CircularProgressIndicator())
-            : SingleChildScrollView(
+       
+            child: SingleChildScrollView(
                 child: Column(
                   children: [
                     Center(

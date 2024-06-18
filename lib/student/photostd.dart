@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/student/addphotostd.dart';
 
@@ -9,48 +10,55 @@ class Photostd extends StatefulWidget {
 }
 
 class _PhotostdState extends State<Photostd> {
-    List image=['images/img1.jpg','images/img2.jpg','images/img3.jpg','images/img4.jpg','images/img1.jpg','images/img2.jpg','images/img3.jpg','images/img4.jpg','images/img1.jpg','images/img2.jpg','images/img3.jpg','images/img4.jpg',];
-
+   
   @override
   Widget build(BuildContext context) {
     return  Scaffold(
-        body: 
-         
-            Column(
-              children: [
-                Expanded(
-                  child: Padding(
-                  padding: const EdgeInsets.only(top: 20),
-                  child: GridView.builder(
-                    itemCount: image.length,
-                    gridDelegate:
-                        SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 4,childAspectRatio: .9,crossAxisSpacing: 2,mainAxisSpacing: 2),
-                    itemBuilder: (context, index) {
-                      return GridTile(child: Image(
-                        fit: BoxFit.cover,
-                        height: 95,
-                        width: 95,
-                        image:AssetImage(image[index]) ));
-                    },
-                  ),
-                        ),
+        body: Padding(
+          padding: const EdgeInsets.only(top: 20,left: 20,right: 20),
+          child: Expanded(
+            child: StreamBuilder(
+            stream: FirebaseFirestore.instance
+                .collection('event_photos')
+                .orderBy('timestamp', descending: true)
+                .snapshots(),
+            builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+            
+              if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+                return Center(child: Text('No images found'));
+              }
+              return GridView.builder(
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  crossAxisSpacing: 8,
+                  mainAxisSpacing: 8,
                 ),
-                 Padding(
-                   padding: const EdgeInsets.only(bottom: 20),
-                   child: InkWell(
-                     onTap: () {
-                       Navigator.push(context, MaterialPageRoute(builder: (context) => Addphotostd(),));
-                     },
-                     child: Image(
-                         height: 70,
-                         width: 70,
-                         image: AssetImage('images/pluscircle.png')),
-                   ),
-                 ),
-              ],
-            ),
-                   
-        
+                itemCount: snapshot.data!.docs.length,
+                itemBuilder: (context, index) {
+                  var doc = snapshot.data!.docs[index];
+                  return Image.network(doc['imageUrl'], fit: BoxFit.cover);
+                },
+              );
+            },
+                  ),
+          ),
+        ),
+      
+         
+          
+           floatingActionButton: Container(
+        height: 70,
+        width: 70,
+        child: FloatingActionButton(onPressed: () {
+          Navigator.push(context, MaterialPageRoute(builder: (context) =>Addphotostd (),));
+        },
+        child: Icon(Icons.add,color: Colors.white,size: 40,),
+        backgroundColor: Color(0xFF3063A5),
+             shape: CircleBorder(),
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
+    
   }
 }

@@ -1,7 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class Studentdetadmin extends StatefulWidget {
-  const Studentdetadmin({super.key});
+ QueryDocumentSnapshot<Map<String, dynamic>>? data;
+   Studentdetadmin({super.key, this.data,});
 
   @override
   State<Studentdetadmin> createState() => _StudentdetadminState();
@@ -11,38 +13,26 @@ class _StudentdetadminState extends State<Studentdetadmin> {
   @override
   Widget build(BuildContext context) {
     return Scaffold (
-        body: SafeArea(
-        child: Column(
-          children: [
-             Center(
-                  child: Padding(
-                padding: const EdgeInsets.only(top: 50),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(right: 90, left: 20),
-                      child: IconButton(
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                          icon: Icon(Icons.arrow_back_ios)),
-                    ),
-                    Text(
+      appBar: AppBar(
+        title:   Text(
                       'Student Detail',
                       style: TextStyle(fontSize: 18,fontWeight: FontWeight.w500 ),
                     ),
-                  ],
-                ),
-              )),
+                    centerTitle: true,
+      ),
+        body: SafeArea(
+          
+        child: Column(
+          children: [
+            
               Padding(
                 padding: const EdgeInsets.only(top: 10,bottom: 5),
-                child: Image(
-                  height: 100,
-                  width: 100,
-                  image: AssetImage('images/person1.png')),
+                child:CircleAvatar(
+                  radius: 50,
+                  backgroundImage:NetworkImage(widget.data!['imageurl']) ,
+                )
               ),
-              Text('Adhil',style: TextStyle(fontSize: 16),),
+              Text(widget.data!['name'],style: TextStyle(fontSize: 16),),
              Padding(
                padding: const EdgeInsets.only(top: 20),
                child: Row(
@@ -96,10 +86,10 @@ class _StudentdetadminState extends State<Studentdetadmin> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
-                      Text('Bcom'),
+                      Text(widget.data!['department']),
                       Padding(
                         padding: const EdgeInsets.only(top: 10),
-                        child: Text('Food Festival'),
+                        child: Text(widget.data!['event']),
                       ),
                       Padding(
                         padding: const EdgeInsets.only(top: 10),
@@ -132,7 +122,7 @@ class _StudentdetadminState extends State<Studentdetadmin> {
          child: Text('Corem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio mattis. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Curabitur tempus urna at turpis condimentum lobortis.'),
        ),  
        Padding(
-              padding: const EdgeInsets.only(top: 220),
+              padding: const EdgeInsets.only(top: 180),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [

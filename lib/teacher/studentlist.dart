@@ -38,7 +38,7 @@ class _Student_ListState extends State<Student_List> {
                                     padding: const EdgeInsets.only(left:80),
                                     child: InkWell(
                                       onTap: () {
-                                        Navigator.push(context, MaterialPageRoute(builder: (context) => stdprofile(),));
+                                        Navigator.push(context, MaterialPageRoute(builder: (context) => teacherprofile(),));
                                       },
                                       child: Image(
                                         height: 26,

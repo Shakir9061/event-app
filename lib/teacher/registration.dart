@@ -2,9 +2,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_application_1/teacher/signin.dart';
 import 'package:flutter_application_1/teacher/studentlist.dart';
-
-
+import 'package:fluttertoast/fluttertoast.dart';
 
 class Registration extends StatefulWidget {
   const Registration({super.key});
@@ -14,30 +14,37 @@ class Registration extends StatefulWidget {
 }
 
 class _RegistrationState extends State<Registration> {
-  var name=TextEditingController();
-  var department=TextEditingController();
-  var phone=TextEditingController();
-  var email=TextEditingController();
-  var password=TextEditingController();
-  final formkey=GlobalKey<FormState>();
+  var name = TextEditingController();
+  var department = TextEditingController();
+  var phone = TextEditingController();
+  var email = TextEditingController();
+  var password = TextEditingController();
+  final formkey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
+    return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
           child: Form(
             key: formkey,
             child: Column(
               children: [
-                Center(child: Padding(
+                Center(
+                    child: Padding(
                   padding: const EdgeInsets.only(top: 50),
-                  child: Text('Registration',style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),),
+                  child: Text(
+                    'Registration',
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
                 )),
                 Row(
                   children: [
                     Padding(
-                      padding: const EdgeInsets.only(top: 40,left: 30),
-                      child: Text('Name',style: TextStyle(fontSize: 15),),
+                      padding: const EdgeInsets.only(top: 40, left: 30),
+                      child: Text(
+                        'Name',
+                        style: TextStyle(fontSize: 15),
+                      ),
                     ),
                   ],
                 ),
@@ -48,7 +55,7 @@ class _RegistrationState extends State<Registration> {
                     width: 350,
                     child: TextFormField(
                       validator: (value) {
-                        if(value!.isEmpty){
+                        if (value!.isEmpty) {
                           return 'Field cannot be empty';
                         }
                       },
@@ -57,11 +64,14 @@ class _RegistrationState extends State<Registration> {
                     ),
                   ),
                 ),
-                 Row(
+                Row(
                   children: [
                     Padding(
-                      padding: const EdgeInsets.only(top: 20,left: 30),
-                      child: Text('Department',style: TextStyle(fontSize: 15),),
+                      padding: const EdgeInsets.only(top: 20, left: 30),
+                      child: Text(
+                        'Department',
+                        style: TextStyle(fontSize: 15),
+                      ),
                     ),
                   ],
                 ),
@@ -71,8 +81,8 @@ class _RegistrationState extends State<Registration> {
                     height: 45,
                     width: 350,
                     child: TextFormField(
-                        validator: (value) {
-                        if(value!.isEmpty){
+                      validator: (value) {
+                        if (value!.isEmpty) {
                           return 'Field cannot be empty';
                         }
                       },
@@ -81,11 +91,14 @@ class _RegistrationState extends State<Registration> {
                     ),
                   ),
                 ),
-                 Row(
+                Row(
                   children: [
                     Padding(
-                      padding: const EdgeInsets.only(top: 20,left: 30),
-                      child: Text('Phone No',style: TextStyle(fontSize: 15),),
+                      padding: const EdgeInsets.only(top: 20, left: 30),
+                      child: Text(
+                        'Phone No',
+                        style: TextStyle(fontSize: 15),
+                      ),
                     ),
                   ],
                 ),
@@ -95,8 +108,8 @@ class _RegistrationState extends State<Registration> {
                     height: 45,
                     width: 350,
                     child: TextFormField(
-                        validator: (value) {
-                        if(value!.isEmpty){
+                      validator: (value) {
+                        if (value!.isEmpty) {
                           return 'Field cannot be empty';
                         }
                       },
@@ -105,11 +118,14 @@ class _RegistrationState extends State<Registration> {
                     ),
                   ),
                 ),
-                 Row(
+                Row(
                   children: [
                     Padding(
-                      padding: const EdgeInsets.only(top: 20,left: 30),
-                      child: Text('Email',style: TextStyle(fontSize: 15),),
+                      padding: const EdgeInsets.only(top: 20, left: 30),
+                      child: Text(
+                        'Email',
+                        style: TextStyle(fontSize: 15),
+                      ),
                     ),
                   ],
                 ),
@@ -119,8 +135,8 @@ class _RegistrationState extends State<Registration> {
                     height: 45,
                     width: 350,
                     child: TextFormField(
-                        validator: (value) {
-                        if(value!.isEmpty){
+                      validator: (value) {
+                        if (value!.isEmpty) {
                           return 'Field cannot be empty';
                         }
                       },
@@ -129,11 +145,14 @@ class _RegistrationState extends State<Registration> {
                     ),
                   ),
                 ),
-                 Row(
+                Row(
                   children: [
                     Padding(
-                      padding: const EdgeInsets.only(top: 20,left: 30),
-                      child: Text('Password',style: TextStyle(fontSize: 15),),
+                      padding: const EdgeInsets.only(top: 20, left: 30),
+                      child: Text(
+                        'Password',
+                        style: TextStyle(fontSize: 15),
+                      ),
                     ),
                   ],
                 ),
@@ -143,8 +162,8 @@ class _RegistrationState extends State<Registration> {
                     height: 45,
                     width: 350,
                     child: TextFormField(
-                        validator: (value) {
-                        if(value!.isEmpty){
+                      validator: (value) {
+                        if (value!.isEmpty) {
                           return 'Field cannot be empty';
                         }
                       },
@@ -156,28 +175,64 @@ class _RegistrationState extends State<Registration> {
                 Padding(
                   padding: const EdgeInsets.only(top: 220),
                   child: InkWell(
-                    onTap: () async{
-                     if(formkey.currentState?.validate()??false) {
-                      UserCredential userCredential=await FirebaseAuth.instance.createUserWithEmailAndPassword(email: email.text, password: password.text);
-                      if(userCredential.user!=null){
-                        await FirebaseFirestore.instance.collection('Teacher data').doc(userCredential.user!.uid).set({
-                          'name':name.text,
-                          'department':department.text,
-                          'phone no':phone.text,
-                          'email':email.text,
-                          'passwoed':password.text
-                        
-                        });
+                    onTap: () async {
+                      if (formkey.currentState?.validate() ?? false) {
+                        try {
+                          UserCredential userCredential = await FirebaseAuth
+                              .instance
+                              .createUserWithEmailAndPassword(
+                                  email: email.text, password: password.text);
+                          var teacherid = userCredential.user!.uid;
+                          if (userCredential.user != null) {
+                            await FirebaseFirestore.instance
+                                .collection('Teacher data')
+                                .doc(teacherid)
+                                .set({
+                              'name': name.text,
+                              'department': department.text,
+                              'phone no': phone.text,
+                              'email': email.text,
+                              'passwoed': password.text,
+                              'teacherid': teacherid
+                            });
+                          }
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => Signin(),
+                              ));
+                        } on FirebaseAuthException catch (e) {
+        print('Failed to register user: $e');
+        String errorMessage = "Registration failed. ${e.message}";
+
+        if (e.code == "email-already-in-use") {
+          errorMessage =
+              "Email is already in use. Please use a different email";
+        }
+        Fluttertoast.showToast(
+          msg: errorMessage,
+        );
+      }
+      
+       catch (e) {
+        print('Unexpected error during registration: $e');
+        Fluttertoast.showToast(
+          msg: "Unexpected error during registration",
+        ); 
+       }
                       }
-                                                                                Navigator.push(context, MaterialPageRoute(builder: (context) => Student_List(),));
-          
-                     }
                     },
                     child: Container(
                       height: 50,
                       width: 350,
-                      decoration: BoxDecoration(color: Color(0xFF3063A5),borderRadius: BorderRadius.circular(7)),
-                      child: Center(child: Text('Submit',style: TextStyle(color: Colors.white,fontSize: 15),)),
+                      decoration: BoxDecoration(
+                          color: Color(0xFF3063A5),
+                          borderRadius: BorderRadius.circular(7)),
+                      child: Center(
+                          child: Text(
+                        'Submit',
+                        style: TextStyle(color: Colors.white, fontSize: 15),
+                      )),
                     ),
                   ),
                 )

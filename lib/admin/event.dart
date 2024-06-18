@@ -23,7 +23,7 @@ class _eventState extends State<event> {
                 padding: const EdgeInsets.only(top: 30),
                 child: Container(
                   height: 40,
-                  width: 140,
+                  width: 150,
                   decoration: BoxDecoration(  color: Color.fromARGB(255, 196, 192, 192),borderRadius: BorderRadius.circular(7)),
                   
                   child: Row(

@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/admin/studentdetadmin.dart';
 
@@ -9,47 +10,35 @@ class Studenttab extends StatefulWidget {
 }
 
 class _StudenttabState extends State<Studenttab> {
-  List std = ['Adhil requests Food Festival', 'rajan requests christmas'];
-  @override
+ 
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
-        body: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(top: 10, left: 10, right: 10),
-              child: ListTile(
-                onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => Studentdetadmin(),));
-                },
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(7)),
-                leading: Image(
-                    height: 30,
-                    width: 30,
-                    image: AssetImage('images/person.png')),
-                title: Text('Adhil requests Food Festival'),
-                textColor: Colors.white,
-                tileColor: Color(0xFF3063A5),
+       body: StreamBuilder(stream: FirebaseFirestore.instance.collection('Request event').snapshots(), builder: (context, snapshot) {
+         if(!snapshot.hasData){
+          return Center(child: CircularProgressIndicator(),);
+         }
+         return ListView.builder(
+          itemCount: snapshot.data!.docs.length,
+          itemBuilder: (context, index) {
+           var data=snapshot.data!.docs[index];
+           return Padding(
+             padding: const EdgeInsets.only(left: 15,top: 10,right: 15),
+             child: ListTile(
+              tileColor: Colors.blue[50],
+              leading: CircleAvatar(
+                backgroundImage:  NetworkImage(data['imageurl'])
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 10, left: 10, right: 10),
-              child: ListTile(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(7)),
-                leading: Image(
-                    height: 30,
-                    width: 30,
-                    image: AssetImage('images/person.png')),
-                title: Text('rajan requests christmas'),
-                textColor: Colors.white,
-                tileColor: Color(0xFF3063A5),
-              ),
-            ),
-          ],
-        ),
+              title:Text('${data['name']} requests ${data['event']}'),
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) => Studentdetadmin(data:data),));
+              },
+             ),
+           );
+
+         },);
+       },),
       ),
     );
   }
